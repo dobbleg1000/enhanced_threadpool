@@ -1,12 +1,12 @@
 import setuptools
 
-with open("README.md", "r") as fh:
+with open("README.markdown", "r") as fh:
     long_description = fh.read()
 
 
 setuptools.setup(
-      name='enhanced_threadpool',
-      version='0.1.1',
+      name='etp',
+      version='0.1.2',
       description='A ThreadPool extension',
       long_description=long_description,
       long_description_content_type="text/markdown",
