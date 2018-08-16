@@ -1,5 +1,6 @@
 from multiprocessing.pool import ThreadPool
 
+
 class EnhancedThreadpool(ThreadPool):
     def __init__(self, pool_method, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -24,7 +25,7 @@ class EnhancedThreadpool(ThreadPool):
                 try:
                     return orig_err_callback(err)
                 finally:
-                     self.__work_count -= 1 # work errored out, so basically work complete
+                    self.__work_count -= 1  # work errored out, so basically work complete
             return new_err_callback
 
         if len(args) > 2:
@@ -41,7 +42,7 @@ class EnhancedThreadpool(ThreadPool):
         else:
             kwargs['error_callback'] = get_new_err_callback(lambda e: None)
 
-        return (args, kwargs)
+        return args, kwargs
 
     def apply_async(self, *args, **kwargs):
         (args, kwargs) = self.adjust_args(args, kwargs)
