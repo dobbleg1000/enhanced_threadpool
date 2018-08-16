@@ -48,7 +48,7 @@ class EnhancedThreadpool(ThreadPool):
         return super().apply_async(self.pool_method, *args, **kwargs)
 
     def execute_async(self, *args, **kwargs):
-        self.apply_async(args, kwargs)
+        return self.apply_async(args, kwargs)
 
     def apply(self, *args, **kwargs):
         self.__work_count += 1
@@ -57,4 +57,4 @@ class EnhancedThreadpool(ThreadPool):
         return retval
 
     def execute(self, *args, **kwargs):
-        self.apply(args, kwargs)
+        return self.apply(args, kwargs)
