@@ -12,18 +12,19 @@ class EnhancedThreadpool(ThreadPool):
     def adjust_args(self, args, kwargs):
         def get_new_callback(orig_callback):
             def new_callback(return_result):
-                retval = orig_callback(return_result)
-                self.__work_count -= 1  # work complete
-                return retval
+                try:
+                    return orig_callback(return_result)
+                finally:
+                    self.__work_count -= 1  # work complete
 
             return new_callback
 
         def get_new_err_callback(orig_err_callback):
             def new_err_callback(err):
-                retval = orig_err_callback(err)
-                self.__work_count -= 1  # work errored out, so basically work complete
-                return retval
-
+                try:
+                    return orig_err_callback(err)
+                finally:
+                     self.__work_count -= 1 # work errored out, so basically work complete
             return new_err_callback
 
         if len(args) > 2:
@@ -52,9 +53,10 @@ class EnhancedThreadpool(ThreadPool):
 
     def apply(self, *args, **kwargs):
         self.__work_count += 1
-        retval = super().apply(self.pool_method, *args, **kwargs)
-        self.__work_count -= 1
-        return retval
-
+        try:
+            return super().apply(self.pool_method, *args, **kwargs)
+        finally:
+            self.__work_count -= 1
+            
     def execute(self, *args, **kwargs):
         return self.apply(args, kwargs)
