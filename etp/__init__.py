@@ -3,17 +3,17 @@ from multiprocessing.pool import ThreadPool
 class EnhancedThreadpool(ThreadPool):
     def __init__(self, pool_method, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.work_count = 0
+        self.__work_count = 0
         self.pool_method = pool_method
 
     def get_work_count(self):
-        return self.work_count
+        return self.__work_count
 
     def adjust_args(self, args, kwargs):
         def get_new_callback(orig_callback):
             def new_callback(return_result):
                 retval = orig_callback(return_result)
-                self.work_count -= 1  # work complete
+                self.__work_count -= 1  # work complete
                 return retval
 
             return new_callback
@@ -21,7 +21,7 @@ class EnhancedThreadpool(ThreadPool):
         def get_new_err_callback(orig_err_callback):
             def new_err_callback(err):
                 retval = orig_err_callback(err)
-                self.work_count -= 1  # work errored out, so basically work complete
+                self.__work_count -= 1  # work errored out, so basically work complete
                 return retval
 
             return new_err_callback
@@ -44,16 +44,16 @@ class EnhancedThreadpool(ThreadPool):
 
     def apply_async(self, *args, **kwargs):
         (args, kwargs) = self.adjust_args(args, kwargs)
-        self.work_count += 1
+        self.__work_count += 1
         return super().apply_async(self.pool_method, *args, **kwargs)
 
     def execute_async(self, *args, **kwargs):
         return self.apply_async(args, kwargs)
 
     def apply(self, *args, **kwargs):
-        self.work_count += 1
+        self.__work_count += 1
         retval = super().apply(self.pool_method, *args, **kwargs)
-        self.work_count -= 1
+        self.__work_count -= 1
         return retval
 
     def execute(self, *args, **kwargs):
