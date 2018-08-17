@@ -6,7 +6,7 @@ with open("README.markdown", "r") as fh:
 
 setuptools.setup(
       name='etp',
-      version='0.3.2',
+      version='0.3.3',
       description='A ThreadPool extension',
       long_description=long_description,
       long_description_content_type="text/markdown",
