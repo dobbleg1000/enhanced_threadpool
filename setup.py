@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
       name='etp',
-      version='0.3.3',
+      version='0.3.4',
       description='A ThreadPool extension',
       url='https://github.com/dobbleg1000/enhanced_threadpool',
       author='DobbleG1000',
