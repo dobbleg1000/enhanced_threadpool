@@ -1,15 +1,9 @@
 import setuptools
 
-with open("README.markdown", "r") as fh:
-    long_description = fh.read()
-
-
 setuptools.setup(
       name='etp',
       version='0.3.3',
       description='A ThreadPool extension',
-      long_description=long_description,
-      long_description_content_type="text/markdown",
       url='https://github.com/dobbleg1000/enhanced_threadpool',
       author='DobbleG1000',
       packages=setuptools.find_packages(),
